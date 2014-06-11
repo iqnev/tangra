@@ -13,7 +13,7 @@ class App {
     
     private static $_instance = null;
     private $_config = null;
-
+    private $_frontController = null;
 
     /*
      * @return \TG\App
@@ -62,5 +62,7 @@ class App {
        if($this->_config->getConfigPath() == null) {
            $this->setConfigFolder('../config');
        }
+       $this->_frontController = \TG\FrontController::getInstance();
+       $this->_frontController->dispach();
     }
 }
