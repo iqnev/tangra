@@ -22,7 +22,8 @@ class FrontController
 
     public function dispach()
     {
-        
+        $test =     new \TG\Routing\DefaultRouter();
+        $test->parse();
     }
 
     /**
