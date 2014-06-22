@@ -71,6 +71,10 @@ class Config
         if ($_configPath != false && is_readable($_configPath) && is_dir($_configPath)) {
             $this->_configArray = [];
             $this->_configPath = $_configPath . DIRECTORY_SEPARATOR;
+            $nameSpace = $this->app['namespaces'];
+            if(is_array($nameSpace)) {
+                \TG\ClassLoader::registerNamespaces($nameSpace);
+            }
         } else {
             throw new Exception('Configuration directory is not correct' . $_configPath);
         }
