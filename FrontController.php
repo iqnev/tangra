@@ -17,16 +17,30 @@ class FrontController
     private $namespace = null;
     private $controller = null;
     private $method = null;
+    private $router;
+    
+    public function getRouter()
+    {
+        return $this->router;
+    }
 
-    private function __construct()
+    public function setRouter(\TG\Routing\iRouter $router)
+    {
+        $this->router = $router;
+    }
+
+        private function __construct()
     {
         
     }
 
     public function dispach()
     {
+        if($this->router == null) {
+            throw new \Exception('No router found', 500);
+        }      
+        $_uri = $this->router->getURI();
         $router = new \TG\Routing\DefaultRouter();
-        $_uri = $router->getURI();
         $routes = \TG\App::getInstance()->getConfig()->routes;
         $_cRewrite = null;
         if (is_array($routes) && count($routes) > 0) {  

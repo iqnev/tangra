@@ -14,6 +14,7 @@ class App {
     private static $_instance = null;
     private $_config = null;
     private $_frontController = null;
+    private $router = null;
 
     /*
      * @return \TG\App
@@ -28,8 +29,17 @@ class App {
            $this->setConfigFolder('../config');
        }
     }
+    public function getRouter()
+    {
+        return $this->router;
+    }
 
-    public static function getInstance()
+    public function setRouter($router)
+    {
+        $this->router = $router;
+    }
+
+        public static function getInstance()
     {
         if(self::$_instance == null) {
             self::$_instance = new App();
@@ -63,6 +73,19 @@ class App {
            $this->setConfigFolder('../config');
        }
        $this->_frontController = \TG\FrontController::getInstance();
+       
+       if($this->router instanceof \TG\Routing\iRouter) {
+           $this->_frontController->setRouter($this->router);
+       } else if($this->router == 'jsonRPCRouter'){
+           //TODO
+            $this->_frontController->setRouter(new \TG\Routing\DefaultRouter());
+       } else if ($this->router == 'CLIRouter') {
+           //TODO
+            $this->_frontController->setRouter(new \TG\Routing\DefaultRouter());
+       } else {
+           $this->_frontController->setRouter(new \TG\Routing\DefaultRouter());
+       }
+       
        $this->_frontController->dispach();
     }
 }
