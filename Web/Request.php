@@ -35,14 +35,14 @@ class Request
     
     public function setPost($arr)
     {
-        if(is_array($var)) {
+        if(is_array($arr)) {
             $this->_post = $arr;
         }
     }
     
     public function setGet($arr)
     {
-        if(is_array($var)) {
+        if(is_array($arr)) {
             $this->_get = $arr;
         }
     }

@@ -15,6 +15,7 @@ class App {
     private $_config = null;
     private $_frontController = null;
     private $router = null;
+    private $dbConnection = [];
 
     /*
      * @return \TG\App
@@ -87,5 +88,25 @@ class App {
        }
        
        $this->_frontController->dispach();
+    }
+    
+    public function getDbConnection($connection = 'default')
+    {
+        if(!$connection) {
+            throw new \Exception('No connection provider', 500);
+        }
+        if($this->dbConnection[$connection]) {
+            return $this->dbConnection[$connection];
+        }
+        
+        $dbConn = $this->getConfig()->database;
+        if(!$dbConn[$connection]) {
+            throw new \Exception('Invalid connection provider', 500);
+        }
+        
+        $db = new \PDO($dbConn[$connection]['connection_uri'], $dbConn[$connection]['username'], $dbConn[$connection]['password'], $dbConn[$connection]['pdo_options']);
+        $this->dbConnection[$connection] = $db;
+        
+        return $db;
     }
 }
