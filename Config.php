@@ -62,17 +62,17 @@ class Config
      * @param $configPath
      */
     public function load($configPath)
-    {
+    {       
         if (!$configPath) {
             throw new Exception('Empty config folder path');
         }
 
-        $_configPath = realpath($configPath);
-        if ($_configPath != false && is_readable($_configPath) && is_dir($_configPath)) {
+        $_configPath = realpath($configPath);        
+        if ($_configPath != false && is_readable($_configPath) && is_dir($_configPath)) {  
             $this->_configArray = [];
-            $this->_configPath = $_configPath . DIRECTORY_SEPARATOR;
-            $nameSpace = $this->app['namespaces'];
-            if(is_array($nameSpace)) {
+            $this->_configPath = $_configPath . DIRECTORY_SEPARATOR;  
+            $nameSpace = $this->app['namespaces'];         
+            if(is_array($nameSpace)) {    
                 \TG\ClassLoader::registerNamespaces($nameSpace);
             }
         } else {
@@ -90,14 +90,14 @@ class Config
             throw new \Exception;
         }
 
-        $file = realpath($path);
+        $file = realpath($path);     
         if ($file != FALSE && is_file($file) && is_readable($file)) {
             $basename = explode('.php', basename($file))[0];
-            $this->_configArray[$basename] = include $file;
-            $namespace = $this->app['namespace'];
-            if (is_array($namespace)) {
-                \TG\ClassLoader::registerNamespace($namespace);
-            }
+            $this->_configArray[$basename] = include $file;    
+//            $namespace = $this->app['namespaces']; 
+//            if (is_array($namespace)) {
+//                \TG\ClassLoader::registerNamespace($namespace);
+//            }
         } else {
             throw new Exception('Configuration file is not correct' . $path);
         }

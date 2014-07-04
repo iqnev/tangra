@@ -85,9 +85,9 @@ class FrontController
             }
         }
         
-        $def = $this->namespace . '\\' . ucfirst($this->controller);
+        $def = $this->namespace . '\\' . ucfirst($this->controller);      
         $newController = new $def();
-        $newController-> {$this->method}();
+        $newController->{$this->method}();
 
     }
     
