@@ -93,9 +93,13 @@ class App
         }
 
         $session = $this->_config->app['session'];
-        if ($session['autostart']) {
-            if($session['type'] == 'native') {
+        if ($session['autostart']) {            
+            if($session['type'] == 'native') { 
                 $s = new \TG\Sessions\NativeSession($session['name'], $session['expiration'], $session['path'], $session['domain'], $session['security']);
+            } elseif ($session['type'] == 'database') {               
+                $s = new \TG\Sessions\DbSession($session['dbConnection'], $session['name'], $session['dbTable'], $session['expiration'], $session['path'], $session['domain'], $session['security']);
+            } else { 
+                throw new Exception('No valid Session', 500);
             }
             $this->setSession($s);
         }
@@ -136,5 +140,11 @@ class App
 
         return $db;
     }
-
+    
+    public function __destruct()
+    {
+        if($this->_session != null) {
+            $this->_session->saveSession();
+        }
+    }
 }
