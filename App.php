@@ -143,7 +143,7 @@ class App
     
     public function __destruct()
     {
-        if($this->_session != null) {
+        if($this->_session) {  
             $this->_session->saveSession();
         }
     }

@@ -53,7 +53,7 @@ class DbSession extends \TG\Database\CoreDB implements \TG\Sessions\iSession {
     
     private function garbageCollector()
     {
-        $this->prepare('DELETE FROM ' . $this->dbTable . 'WHERE valid_until<?', [time()])->execute();
+        $this->prepare('DELETE FROM ' . $this->dbTable . ' WHERE valid_until <?', [time()])->execute();
     }
 
     private function validateSession()
@@ -62,7 +62,7 @@ class DbSession extends \TG\Database\CoreDB implements \TG\Sessions\iSession {
             $result = $this->prepare('SELECT * FROM ' . $this->dbTable . ' WHERE sessid=? AND valid_until<=?', [
                         $this->sessionId, (time() + $this->expiration)])->execute()->fetchAllAssoc();
 
-            if (is_array($result) && $result[0]) {
+            if (is_array($result) && $result[0]) {               // var_dump($result); exit;
                 $this->sessionData = unserialize($resultp[0]['sess_data']);
 
                 return true;
@@ -73,7 +73,7 @@ class DbSession extends \TG\Database\CoreDB implements \TG\Sessions\iSession {
     }
 
     public function __get($name)
-    {
+    {       
         return $this->sessionData[$name];
     }
 
@@ -97,7 +97,7 @@ class DbSession extends \TG\Database\CoreDB implements \TG\Sessions\iSession {
     }
 
     public function saveSession()
-    {        
+    {       
         if ($this->sessionId) {
             $this->prepare('UPDATE ' . $this->dbTable . ' SET sess_data=?, valid_until=? WHERE sessid=?', [
                 serialize($this->sessionData), (time() + $this->expiration), $this->sessionId
