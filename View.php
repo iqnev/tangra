@@ -62,6 +62,7 @@ class View {
         }
     }
 
+
     public function render($view, $data = [], $return = false)
     {
         if (is_array($data)) {
@@ -76,7 +77,8 @@ class View {
                 }
             }
         }
-        
+
+        //if show view template or return view
         if ($return) {
             return $this->includeFile($view);
         } else {
