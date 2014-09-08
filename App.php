@@ -26,6 +26,8 @@ class App
 
     private function __construct()
     {
+        set_exception_handler([$this, 'exception_handler']);
+
         \TG\ClassLoader::registerNamespace('TG', dirname(__FILE__) . DIRECTORY_SEPARATOR);
         \TG\ClassLoader::registerAutoLoad();
         $this->_config = \TG\Config::getInstance();       
@@ -140,7 +142,28 @@ class App
 
         return $db;
     }
-    
+
+    public function exception_handler(\Exception $exc)
+    {
+        if($this->_config && $this->_config->app['enableExceptions'] == true) {
+            echo '<pre>'. print_r($exc, true);
+        } else {
+            $this->showErrors($exc->getCode());
+        }
+    }
+
+    public function showErrors($errorCode)
+    {
+        try{
+            $view =  \TG\View::getInstance();
+            $view->render('errors', $errorCode);
+        } catch() {
+            \TG\Common::headerStatus($errorCode);
+            echo '<b>' . $errorCode . '</b>';
+            exit;
+        }
+    }
+
     public function __destruct()
     {
         if($this->_session) {  
