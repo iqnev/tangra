@@ -157,7 +157,8 @@ class App
         try{
             $view =  \TG\View::getInstance();
             $view->render('errors', $errorCode);
-        } catch() {
+        } catch(\Exception $e) {
+            //TODO fix
             \TG\Common::headerStatus($errorCode);
             echo '<b>' . $errorCode . '</b>';
             exit;
