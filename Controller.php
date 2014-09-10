@@ -24,7 +24,7 @@ class Controller {
      */
     public $config;
     /**
-     * @var \TG\Input
+     * @var \TG\Web\Request
      */
     public $input;
 
@@ -33,6 +33,6 @@ class Controller {
         $this->app = \TG\App::getInstance();
         $this->config = $this->app->getConfig();
         $this->view = \TG\View::getInstance();
-        //$this->input = \TG\Input::getInstance();
+        $this->input = \TG\Web\Request::getInstance();
     }
 } 

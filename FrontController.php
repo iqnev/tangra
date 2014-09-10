@@ -17,6 +17,9 @@ class FrontController
     private $namespace = null;
     private $controller = null;
     private $method = null;
+    /**
+     * @var \TG\Web\Request
+     */
     private $router;
     
     public function getRouter()
@@ -63,12 +66,16 @@ class FrontController
             throw new \Exception('Default route missing', 500);
         }
 
+        $input = \TG\Web\Request::getInstance();
         $_params = explode('/', $_uri);       
         if ($_params[0]) {
             $this->controller = strtolower($_params[0]);
 
+            //if we don't have controller and method, we don't have params
             if ($_params[1]) {
                 $this->method = strtolower($_params[1]);
+                unset($_params[0], $_params[1]);
+                $input->setGet(array_values($_params));
             } else {
                 $this->method = $this->getDefaultMethod();
             }
@@ -84,7 +91,10 @@ class FrontController
                 $this->controller = strtolower($_cRewrite['controllers'][$this->controller]['to']);
             }
         }
-        
+
+
+        $input->setPost($this->router->getPost());
+
         $def = $this->namespace . '\\' . ucfirst($this->controller);      
         $newController = new $def();
         $newController->{$this->method}();

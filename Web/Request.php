@@ -22,7 +22,7 @@ class Request
     
     /**
      * 
-     * @return TG\Web
+     * @return \TG\Web
      */
     public static function getInstance()
     {
@@ -52,14 +52,14 @@ class Request
         return array_key_exists($name, $this->_post);
     }
     
-    public function isCookies () 
+    public function isCookies ($name)
     {
         return array_key_exists($name, $this->_cookies);
     }
     
-    public function isGet() 
+    public function isGet($id)
     {
-        return array_key_exists($name, $this->_get);
+        return array_key_exists($id, $this->_get);
     }
     
     public function get($id, $normalize = null, $default = null)

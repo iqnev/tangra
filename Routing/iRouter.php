@@ -10,4 +10,5 @@ namespace TG\Routing;
 interface iRouter
 {
     public function getURI();
+    public function getPost();
 }
